@@ -2,7 +2,7 @@ const fs = require('fs');
 const database = JSON.parse(fs.readFileSync('./data/concesionarias.json', 'utf-8'))
 
 const autosController = {
-    autos: function(req, res) {
+    index: function(req, res) {
         res.set({'content-type':'text/plain;charset=utf-8'});
         let autos = [];
         database.forEach(function(sucursales){
@@ -20,8 +20,22 @@ const autosController = {
             res.write('-------------\n')
         })
         res.end();
+    },
+    marca: function(req, res) {
+    let id = req.params.marca;
+    res.set({'content-type':'text/plain;charset=utf-8'});
+    res.write('Estos son nuestros autos según su marca! \n\n')
+    res.write('------\n');
+    database.forEach(function(sucursales){
+    sucursales.autos.forEach(function(auto){
+            if (id == auto.marca){
+            res.write(`Modelo: ${auto.modelo.toUpperCase()} | Año: ${auto.anio}\n`)
+                }
+            })
+        })
+    res.write('------\n');    
+    res.end();
     }
-    //rutas parametrizadas
 }
 
 module.exports = autosController

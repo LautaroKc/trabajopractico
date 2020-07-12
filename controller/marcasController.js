@@ -19,8 +19,23 @@ const marcas = {
         });
         res.write('--------------')
         res.send();
-    }
-    //rutas parametrizadas
+    },
+    marca: function(req,res) {
+        res.set({'content-type':'text/plain;charset=utf-8'})
+        let id = req.params.marca;
+        res.write('Estos son nuestros autos según la marca!\n\n')
+        res.write('MARCA / MODELO / AÑO\n');
+        res.write('------\n');
+        database.forEach(function(sucursal){
+        sucursal.autos.forEach(function(auto){
+            if(auto.marca == id){
+                res.write(`${auto.marca.toUpperCase()} ${auto.modelo.toUpperCase()} ${auto.anio}\n`)
+                }    
+            }) 
+        })
+        res.write('------\n'); 
+        res.end(); 
+    }    
 }        
 
 module.exports = marcas
